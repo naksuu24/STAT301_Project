@@ -1,0 +1,292 @@
+---
+title: "AirBnB Data Analysis Report"
+author: "STAT301 Project"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: cosmo
+    highlight: tango
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+```
+
+# Executive Summary
+
+This report presents an exploratory data analysis of AirBnB listings data. The analysis examines pricing patterns, room type distributions, geographic trends, and factors affecting listing popularity.
+
+## Key Findings
+
+- Summary of main insights from the analysis
+- Important patterns and trends discovered
+- Statistical relationships identified
+
+---
+
+# 1. Introduction
+
+## 1.1 Background
+
+AirBnB is a popular platform for short-term rental accommodations. Understanding the factors that influence listing prices and popularity is important for both hosts and guests.
+
+## 1.2 Research Questions
+
+This analysis aims to answer the following questions:
+
+1. What is the distribution of listing prices?
+2. How do prices vary by room type?
+3. Which neighbourhoods have the most listings?
+4. Is there a relationship between number of reviews and price?
+5. Are there significant price differences between room types?
+
+## 1.3 Data Description
+
+The dataset contains AirBnB listings with the following key variables:
+
+- **id**: Unique identifier for each listing
+- **name**: Name of the listing
+- **neighbourhood**: Neighbourhood location
+- **room_type**: Type of accommodation (Entire home/apt, Private room, Shared room)
+- **price**: Nightly price in dollars
+- **number_of_reviews**: Total number of reviews received
+- **availability_365**: Number of days available per year
+
+---
+
+# 2. Data Loading and Preparation
+
+```{r load-data}
+# Load the data
+airbnb_data <- read_csv("../data/sample_data.csv")
+
+# Display first few rows
+kable(head(airbnb_data, 10), caption = "First 10 rows of AirBnB Data") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+## 2.1 Data Structure
+
+```{r data-structure}
+# Display data structure
+cat("Dataset dimensions:", nrow(airbnb_data), "rows,", ncol(airbnb_data), "columns\n")
+
+# Show data types
+str(airbnb_data)
+```
+
+## 2.2 Missing Values
+
+```{r missing-values}
+# Check for missing values
+missing_summary <- data.frame(
+  Variable = names(airbnb_data),
+  Missing_Count = colSums(is.na(airbnb_data)),
+  Missing_Percent = round(colSums(is.na(airbnb_data)) / nrow(airbnb_data) * 100, 2)
+)
+
+kable(missing_summary, caption = "Missing Values Summary") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+---
+
+# 3. Exploratory Data Analysis
+
+## 3.1 Price Analysis
+
+### Summary Statistics
+
+```{r price-summary}
+price_summary <- data.frame(
+  Statistic = c("Mean", "Median", "Min", "Max", "Std Dev", "Q1", "Q3"),
+  Value = c(
+    mean(airbnb_data$price, na.rm = TRUE),
+    median(airbnb_data$price, na.rm = TRUE),
+    min(airbnb_data$price, na.rm = TRUE),
+    max(airbnb_data$price, na.rm = TRUE),
+    sd(airbnb_data$price, na.rm = TRUE),
+    quantile(airbnb_data$price, 0.25, na.rm = TRUE),
+    quantile(airbnb_data$price, 0.75, na.rm = TRUE)
+  )
+)
+
+kable(price_summary, caption = "Price Summary Statistics", digits = 2) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+### Price Distribution
+
+```{r price-distribution, fig.width=10, fig.height=6}
+ggplot(airbnb_data, aes(x = price)) +
+  geom_histogram(bins = 30, fill = "steelblue", color = "black", alpha = 0.7) +
+  labs(title = "Distribution of AirBnB Listing Prices",
+       x = "Price ($)",
+       y = "Count") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 16, face = "bold"))
+```
+
+**Interpretation:** The price distribution shows [describe the distribution - is it skewed? Normal? What's the typical price range?].
+
+## 3.2 Room Type Analysis
+
+### Room Type Distribution
+
+```{r room-type-distribution}
+room_type_summary <- airbnb_data %>%
+  group_by(room_type) %>%
+  summarise(
+    Count = n(),
+    Percentage = round(n() / nrow(airbnb_data) * 100, 2),
+    Avg_Price = round(mean(price, na.rm = TRUE), 2),
+    Median_Price = round(median(price, na.rm = TRUE), 2)
+  ) %>%
+  arrange(desc(Count))
+
+kable(room_type_summary, caption = "Room Type Distribution and Pricing") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+### Price by Room Type
+
+```{r price-by-room-type, fig.width=10, fig.height=6}
+ggplot(airbnb_data, aes(x = room_type, y = price, fill = room_type)) +
+  geom_boxplot() +
+  labs(title = "Price Distribution by Room Type",
+       x = "Room Type",
+       y = "Price ($)") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+        legend.position = "none")
+```
+
+**Interpretation:** [Describe the differences in prices between room types].
+
+## 3.3 Geographic Analysis
+
+### Top Neighbourhoods
+
+```{r neighbourhood-analysis}
+neighbourhood_summary <- airbnb_data %>%
+  group_by(neighbourhood) %>%
+  summarise(
+    Count = n(),
+    Avg_Price = round(mean(price, na.rm = TRUE), 2),
+    Avg_Reviews = round(mean(number_of_reviews, na.rm = TRUE), 2)
+  ) %>%
+  arrange(desc(Count)) %>%
+  head(10)
+
+kable(neighbourhood_summary, caption = "Top 10 Neighbourhoods by Number of Listings") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+```{r neighbourhood-plot, fig.width=10, fig.height=8}
+airbnb_data %>%
+  count(neighbourhood) %>%
+  top_n(10, n) %>%
+  ggplot(aes(x = reorder(neighbourhood, n), y = n)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  labs(title = "Top 10 Neighbourhoods by Number of Listings",
+       x = "Neighbourhood",
+       y = "Number of Listings") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 16, face = "bold"))
+```
+
+## 3.4 Reviews Analysis
+
+### Relationship between Reviews and Price
+
+```{r reviews-price-correlation, fig.width=10, fig.height=6}
+ggplot(airbnb_data, aes(x = number_of_reviews, y = price)) +
+  geom_point(alpha = 0.6, color = "steelblue") +
+  geom_smooth(method = "lm", color = "red", se = TRUE) +
+  labs(title = "Relationship between Number of Reviews and Price",
+       x = "Number of Reviews",
+       y = "Price ($)") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 16, face = "bold"))
+```
+
+---
+
+# 4. Statistical Analysis
+
+## 4.1 ANOVA: Price Differences by Room Type
+
+Testing whether there are significant differences in prices between room types.
+
+**Hypotheses:**
+- H₀: Mean prices are equal across all room types
+- H₁: At least one room type has a different mean price
+
+```{r anova-test}
+anova_result <- aov(price ~ room_type, data = airbnb_data)
+anova_summary <- summary(anova_result)
+print(anova_summary)
+```
+
+**Conclusion:** [Interpret the ANOVA results based on the p-value].
+
+## 4.2 Correlation: Price vs. Number of Reviews
+
+```{r correlation-test}
+cor_test <- cor.test(airbnb_data$price, airbnb_data$number_of_reviews)
+print(cor_test)
+```
+
+**Results:**
+- Correlation coefficient: `r round(cor_test$estimate, 4)`
+- P-value: `r format(cor_test$p.value, scientific = TRUE, digits = 4)`
+
+**Conclusion:** [Interpret the correlation results].
+
+---
+
+# 5. Conclusions
+
+## 5.1 Summary of Findings
+
+1. **Price Distribution**: [Summarize key findings about prices]
+2. **Room Types**: [Summarize key findings about room types]
+3. **Geography**: [Summarize key findings about neighborhoods]
+4. **Reviews**: [Summarize key findings about reviews]
+
+## 5.2 Limitations
+
+- The sample dataset is limited in size
+- Data is from a specific time period
+- Additional variables could provide more insights
+
+## 5.3 Future Directions
+
+- Analyze seasonal trends in pricing
+- Investigate the impact of amenities on price
+- Examine host characteristics and their relationship to listing success
+- Build predictive models for pricing
+
+---
+
+# 6. References
+
+- Data source: Inside AirBnB (http://insideairbnb.com/)
+- Analysis tools: R, tidyverse, ggplot2
+
+---
+
+# Appendix
+
+## Session Information
+
+```{r session-info}
+sessionInfo()
+```
