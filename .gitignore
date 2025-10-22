@@ -1,0 +1,51 @@
+# Data Science Project .gitignore
+
+# R
+.Rhistory
+.RData
+.Rproj.user
+*.Rproj
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+*.egg-info/
+dist/
+build/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Data files (large datasets)
+data/*.csv
+data/*.zip
+data/*.tar.gz
+!data/README.md
+!data/sample_data.csv
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Output
+figures/*.png
+figures/*.jpg
+figures/*.pdf
+!figures/README.md
+reports/*.html
+reports/*.pdf
+!reports/*.Rmd
+!reports/*.md
