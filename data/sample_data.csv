@@ -1,0 +1,21 @@
+id,name,host_id,host_name,neighbourhood,latitude,longitude,room_type,price,minimum_nights,number_of_reviews,last_review,reviews_per_month,availability_365,number_of_reviews_ltm
+2539,Clean & quiet apt home by the park,2787,John,Kensington,40.64749,-73.97237,Private room,149,1,9,2018-10-19,0.21,365,9
+2595,Skylit Midtown Castle,2845,Jennifer,Midtown,40.75362,-73.98377,Entire home/apt,225,1,45,2019-05-21,0.38,355,45
+3647,THE VILLAGE OF HARLEM....NEW YORK !,4632,Elisabeth,Harlem,40.80902,-73.94190,Private room,150,3,0,,,365,0
+3831,Cozy Entire Floor of Brownstone,4869,LisaRoxanne,Clinton Hill,40.68514,-73.95976,Entire home/apt,89,1,270,2019-07-05,4.64,194,270
+5022,Entire Apt: Spacious Studio/Loft by central park,7192,Laura,East Harlem,40.79851,-73.94399,Entire home/apt,80,10,9,2018-11-19,0.10,365,9
+5099,Large Cozy 1 BR Apartment In Midtown East,7322,Chris,Murray Hill,40.74767,-73.97500,Entire home/apt,200,3,74,2019-06-22,0.59,129,74
+5121,BlissArtsSpace!,7356,Garon,Bedford-Stuyvesant,40.68688,-73.95596,Private room,60,45,49,2017-10-05,0.40,0,49
+5178,Large Furnished Room Near B'way,8967,Shunichi,Hell's Kitchen,40.76489,-73.98493,Private room,79,2,430,2019-06-24,3.47,220,430
+5203,Cozy Clean Guest Room - Family Apt,7490,MaryEllen,Upper West Side,40.80178,-73.96723,Private room,79,2,118,2017-07-21,0.99,417,118
+5238,Cute & Cozy Lower East Side 1 bdrm,7549,Ben,Lower East Side,40.71344,-73.98778,Entire home/apt,150,1,160,2019-06-09,1.33,188,160
+5295,Beautiful 1br on Upper West Side,7702,Lena,Upper West Side,40.80316,-73.96545,Entire home/apt,135,5,53,2018-11-18,0.43,6,53
+5441,Central Manhattan/Near Central Park,7989,Kate,East Harlem,40.79620,-73.94283,Private room,85,7,188,2019-06-23,1.56,289,188
+5803,Wonderful Guest Bedroom in Manhattan for SINGLES,9744,Claudio,Harlem,40.80907,-73.94342,Private room,89,2,30,2019-05-21,1.40,275,30
+6021,Affordable room in Bushwick/East Williamsburg,9815,Marisol,Bushwick,40.70184,-73.93317,Private room,40,4,118,2017-07-21,1.01,0,118
+6082,Sunny Room in Friendly Apartment,10011,Soph,Williamsburg,40.71457,-73.95617,Private room,70,1,232,2019-07-04,1.96,147,232
+6199,Beautiful Room In Williamsburg,10115,Kelly,Williamsburg,40.71533,-73.95606,Private room,65,2,21,2019-06-30,0.17,240,21
+6304,Charming 1BR in Prime Williamsburg,10244,Robert,Williamsburg,40.71467,-73.95524,Entire home/apt,125,2,132,2018-03-28,1.12,355,132
+6339,Comfortable Private Room in Brooklyn,10283,Jessica,Crown Heights,40.67032,-73.94373,Private room,65,3,37,2018-08-04,0.31,0,37
+6357,Perfect Room in the Heart of Brooklyn,10297,Annie,Park Slope,40.67143,-73.98168,Private room,95,1,14,2019-05-18,0.12,10,14
+6429,Charming private room 5min to Manhattan,10474,Olson,Williamsburg,40.71467,-73.95524,Private room,55,2,38,2019-06-05,0.32,101,38
